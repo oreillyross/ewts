@@ -1,0 +1,13 @@
+Event
+  Title: string
+  Description: string
+  Date: date
+  Time: time
+  Category: enum
+  Descriptors: [] 
+  Url: url
+  Source: string
+  
+  
+  
+  

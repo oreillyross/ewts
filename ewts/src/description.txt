@@ -1,0 +1,7 @@
+This application is a single page app that uses the following technologies and libraries. 
+It is written in Javascript using React as the front end library. It has been bootstrapped using
+create-react-app.
+
+The testing library being used is Jest.
+
+The styling library being used is styled-components
