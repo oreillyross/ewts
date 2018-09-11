@@ -3,10 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "apollo-boost": "^0.1.15",
     "dotenv": "^6.0.0",
+    "graphql": "^14.0.2",
     "react": "^16.5.0",
+    "react-apollo": "^2.1.11",
     "react-dom": "^16.5.0",
     "react-scripts": "1.1.5",
+    "react-virtualized": "^9.20.1",
     "styled-components": "^3.4.5"
   },
   "scripts": {
@@ -14,5 +18,21 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
+  },
+  "devDependencies": {
+    "husky": "^1.0.0-rc.14",
+    "lint-staged": "^7.2.2",
+    "prettier": "^1.14.2"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,json,css,md}": [
+      "prettier --write",
+      "git add"
+    ]
   }
 }

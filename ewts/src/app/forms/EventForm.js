@@ -1,6 +1,5 @@
-import React from 'react'
-import  styled  from 'styled-components'
-
+import React from "react";
+import styled from "styled-components";
 
 const Title = styled.div`
   margin: 3px;
@@ -9,16 +8,12 @@ const Title = styled.div`
   padding: 4px;
   padding-left: 20px;
   text-align: left;
-  font-family: 'Roboto Condensed', sans-serif;
-`
-console.log(process.env.GRAPHCOOL_URL)
+  font-family: "Roboto Condensed", sans-serif;
+`;
 
 class EventForm extends React.Component {
-    render() {
-        return (
-          <Title> Create a new event </Title>
-          
-        )
-    }
+  render() {
+    return <Title> Create a new event </Title>;
+  }
 }
-export default EventForm
+export default EventForm;

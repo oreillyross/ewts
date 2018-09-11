@@ -7,5 +7,13 @@ The testing library being used is Jest.
 The styling library being used is styled-components
 
 The communication between client and server uses GraphQL spec, and specifically 
-uses the Apollo libraries for React, and uses GraphCool as the BAAS for more 
+uses the Apollo client libraries for React, and uses GraphCool as the BAAS for more 
 easily adding CRUD capabilities
+
+the environment variables library dotenv is being used to pull in secret credentials. It uses the following convention 
+to append REACT_APP_ to the keys in the .env file. the environment variable can be obtained from process.env
+
+For displaying large lists the app uses react-virtualized
+
+The linter used is prettier which automatically formats the files, it also uses a pre-commit 
+hook using husky and lint-staged npm packages
