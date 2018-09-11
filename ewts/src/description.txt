@@ -5,3 +5,7 @@ create-react-app.
 The testing library being used is Jest.
 
 The styling library being used is styled-components
+
+The communication between client and server uses GraphQL spec, and specifically 
+uses the Apollo libraries for React, and uses GraphCool as the BAAS for more 
+easily adding CRUD capabilities
