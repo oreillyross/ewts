@@ -16,7 +16,6 @@ class App extends Component {
             </header>
             <div className="App-intro">
               <EventForm />
-              <EventDetails />
             </div>
           </div>
         </ApolloProvider>

@@ -1,12 +1,38 @@
 Event
   Title: string
   Description: string
+  Keyword: string
   Date: date
   Time: time
   Category: enum
-  Descriptors: [] 
   Url: url
   Source: string
+  Indicators: [IndicatorIDs]
+  LinkedEvents: [EventIDs]
+  ActiveAgent: enum
+  AffectedAgent: enum
+  Location: enum
+  Action: enum
+  Intent: enum
+  
+Indicator
+  Title
+  Strength: enum
+  LinkedEvents: [EventIDs]
+  LastReviewDate: date
+  
+
+Scenario
+  Title: string
+  Description: string
+  Indicators: [IndicatorIDs]
+  
+Keywords
+  Title: string
+  UpdatedDate: date
+  
+  
+  
   
   
   
