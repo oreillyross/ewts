@@ -1,4 +1,5 @@
 import React from "react";
+import EventTable from "./EventTable";
 
 class Events extends React.Component {
   constructor() {
@@ -12,7 +13,7 @@ class Events extends React.Component {
         return response.json();
       })
       .then(data => {
-        console.log(data);
+        this.setState((prevState, props) => ({ sources: data }));
       });
   }
 
@@ -20,8 +21,8 @@ class Events extends React.Component {
     return (
       <div>
         {" "}
-        Events go here
-        {this.state.sources}
+        <h1> Events </h1>
+        <EventTable sources={this.state.sources} />
       </div>
     );
   }
