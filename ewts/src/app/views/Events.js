@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from "react";
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
-import { Column, Table } from "react-virtualized";
+import { Column, Table, AutoSizer } from "react-virtualized";
 import styles from "./Events.module.css";
+import Input from "@material-ui/icons/Input";
+import Read from "@material-ui/icons/Drafts";
+import Markunread from "@material-ui/icons/Markunread";
+import EventDetails from "./EventDetails";
 
 const _rowClassName = ({ index }) => {
   if (index < 0) {
@@ -30,20 +34,48 @@ const Events = () => (
     {({ loading, error, data }) => {
       if (loading) return "Loading data.......";
       if (error) return `Error: ${error.message}`;
-      const titles = data.allEvents.map(event => event.title);
       return (
-        <Table
-          width={1400}
-          height={500}
-          headerHeight={40}
-          rowHeight={30}
-          rowCount={data.allEvents.length}
-          rowGetter={({ index }) => data.allEvents[index]}
-          rowClassName={_rowClassName}
-          headerClassName="headers"
-        >
-          <Column label="Title" dataKey="title" width={800} className="rows" />
-        </Table>
+        <AutoSizer disableHeight>
+          {({ width }) => (
+            <div>
+              <Table
+                width={width}
+                height={400}
+                headerHeight={40}
+                rowHeight={30}
+                rowCount={data.allEvents.length}
+                rowGetter={({ index }) => data.allEvents[index]}
+                rowClassName={_rowClassName}
+                headerClassName="headers"
+                onRowClick={({ rowData }) => {
+                  console.log(rowData.id);
+                }}
+              >
+                <Column
+                  label="Title"
+                  dataKey="title"
+                  width={800}
+                  className="rows"
+                  cellRenderer={({ rowData }) => {
+                    return <a href={rowData.href}>{rowData.title}</a>;
+                  }}
+                />
+                <Column
+                  label="Actions"
+                  dataKey="actions"
+                  width={140}
+                  cellRenderer={({ rowData }) => {
+                    return rowData.unread ? (
+                      <Markunread color="primary" />
+                    ) : (
+                      <Read />
+                    );
+                  }}
+                />
+              </Table>
+            </div>
+          )}
+        </AutoSizer>
       );
     }}
   </Query>
