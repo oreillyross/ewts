@@ -7,6 +7,7 @@ import Input from "@material-ui/icons/Input";
 import Read from "@material-ui/icons/Drafts";
 import Markunread from "@material-ui/icons/Markunread";
 import EventDetails from "./EventDetails";
+import { Route, Redirect } from "react-router-dom";
 
 const _rowClassName = ({ index }) => {
   if (index < 0) {
@@ -29,7 +30,7 @@ const EVENTSQUERY = gql`
   }
 `;
 
-const Events = () => (
+const Events = ({ history }) => (
   <Query query={EVENTSQUERY}>
     {({ loading, error, data }) => {
       if (loading) return "Loading data.......";
@@ -48,7 +49,7 @@ const Events = () => (
                 rowClassName={_rowClassName}
                 headerClassName="headers"
                 onRowClick={({ rowData }) => {
-                  console.log(rowData.id);
+                  history.push(`/eventdetails/${rowData.id}`);
                 }}
               >
                 <Column
