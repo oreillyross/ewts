@@ -1,7 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import gql from "graphql-tag";
-import { Query } from "react-apollo";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Query, Mutation } from "react-apollo";
+
+import TextField from "@material-ui/core/TextField";
+import Paper from "@material-ui/core/Paper";
+import Button from "@material-ui/core/Button";
+import EventDetailsStatic from "./EventDetailsStatic";
+import EventDetailsForm from "../forms/EventDetailsForm";
+import withStyles from "@material-ui/core/styles/withStyles";
 
 const EVENTQUERY = gql`
   query getEvent($id: ID!) {
@@ -16,41 +22,59 @@ const EVENTQUERY = gql`
   }
 `;
 
-const EventDetails = ({ match }) => (
-  <Query query={EVENTQUERY} variables={{ id: match.params.id }}>
-    {({ loading, error, data }) => {
-      if (loading) return null;
-      if (error) return `Error!: ${error}`;
-      return (
-        <div>
-          <Formik
-            initialValues={{
-              title: data.getEvent.title,
-              description: data.getEvent.description
-            }}
-            onSubmit={(values, { setSubmitting }) => {
-              setTimeout(() => {
-                alert(JSON.stringify(values, null, 2));
-                setSubmitting(false);
-              }, 400);
-            }}
-          >
-            {({ isSubmitting }) => (
-              <Form>
-                <Field type="text" name="title" />
-                <ErrorMessage name="title" component="div" />
-                <Field type="text" name="description" />
-                <ErrorMessage name="description" component="div" />
-                <button type="submit" disabled={isSubmitting}>
-                  Submit
-                </button>
-              </Form>
-            )}
-          </Formik>
-        </div>
-      );
-    }}
-  </Query>
-);
+const styles = theme => ({
+  paper: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "left",
+    padding: `${theme.spacing.unit * 1.5}px ${theme.spacing.unit *
+      1.55}px ${theme.spacing.unit * 1.55}px`
+  },
+  container: {}
+});
 
-export default EventDetails;
+const testEvent = {
+  id: "123456789",
+  title: "Title",
+  description: "Description"
+};
+
+const EventDetails = ({ match, classes, history }) => {
+  const [editing, setEditing] = useState(true);
+  const id = match.params.id;
+
+  const onEdit = () => {
+    if (!editing) {
+      setEditing(true);
+    } else {
+      setEditing(false);
+    }
+  };
+
+  return (
+    <div>
+      Editing: {editing ? "True" : "False"}
+      <Query query={EVENTQUERY} variables={{ id: id }}>
+        {({ loading, error, data }) => {
+          if (loading) return "Loading.....";
+          if (!editing) {
+            return (
+              <div>
+                {" "}
+                <EventDetailsStatic event={data.getEvent} />{" "}
+              </div>
+            );
+          } else {
+            return (
+              <div>
+                <EventDetailsForm event={data.getEvent} />
+              </div>
+            );
+          }
+        }}
+      </Query>
+    </div>
+  );
+};
+
+export default withStyles(styles)(EventDetails);

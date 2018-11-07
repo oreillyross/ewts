@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./App.css";
-import EventForm from "./app/forms/EventForm";
+
 import EventDetails from "./app/views/EventDetails";
 import Events from "./app/views/Events";
 import client from "./data/apolloClient";
@@ -17,13 +17,16 @@ class App extends Component {
               <header className="App-header">
                 <h1 className="App-title">Early Warning Threat System</h1>
               </header>
-              <div className="App-intro">
+              <div align="left">
                 <span>
                   <Link to="/events">
                     <button>Events list</button>
                   </Link>
+                  <hr />
                 </span>
                 &nbsp;&nbsp;
+              </div>
+              <div className="body">
                 <Route path="/events" component={Events} />
                 <Route path="/eventdetails/:id" component={EventDetails} />
               </div>

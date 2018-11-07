@@ -10,7 +10,7 @@
 .App-header {
   background-color: #222;
 
-  padding: 20px;
+  padding: 5px;
   color: white;
 }
 
@@ -20,15 +20,6 @@
 
 .App-intro {
   font-size: large;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
 }
 
 .left {
@@ -84,4 +75,22 @@
   justify-content: center;
   font-size: 1em;
   color: #bdbdbd;
+}
+
+/*----------------------------------------*/
+
+.eventDetails-form-container {
+  margin: 0px auto;
+  margin-top: 5px;
+}
+.eventDetails-form {
+  float: left;
+  width: 100%;
+  height: auto;
+}
+.eventDetails-form-textinput {
+  float: left;
+  width: 100%;
+  border: 1px solid grey;
+  font-size: medium;
 }
