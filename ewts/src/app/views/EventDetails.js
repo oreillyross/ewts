@@ -15,6 +15,7 @@ const EVENTQUERY = gql`
       id
       title
       description
+      crawlDate
       source
       href
       unread
@@ -33,12 +34,6 @@ const styles = theme => ({
   container: {}
 });
 
-const testEvent = {
-  id: "123456789",
-  title: "Title",
-  description: "Description"
-};
-
 const EventDetails = ({ match, classes, history }) => {
   const [editing, setEditing] = useState(true);
   const id = match.params.id;
@@ -53,7 +48,6 @@ const EventDetails = ({ match, classes, history }) => {
 
   return (
     <div>
-      Editing: {editing ? "True" : "False"}
       <Query query={EVENTQUERY} variables={{ id: id }}>
         {({ loading, error, data }) => {
           if (loading) return "Loading.....";
@@ -67,7 +61,8 @@ const EventDetails = ({ match, classes, history }) => {
           } else {
             return (
               <div>
-                <EventDetailsForm event={data.getEvent} />
+                {/* <EventDetailsForm event={data.getEvent} /> */}
+                <EventDetailsForm event={{}} />
               </div>
             );
           }
