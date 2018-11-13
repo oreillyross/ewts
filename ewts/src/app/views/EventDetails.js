@@ -61,8 +61,7 @@ const EventDetails = ({ match, classes, history }) => {
           } else {
             return (
               <div>
-                {/* <EventDetailsForm event={data.getEvent} /> */}
-                <EventDetailsForm event={{}} />
+                <EventDetailsForm event={data.getEvent} />
               </div>
             );
           }

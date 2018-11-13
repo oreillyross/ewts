@@ -12,6 +12,8 @@ import SaveIcon from "@material-ui/icons/Save";
 import FormGroup from "@material-ui/core/FormGroup";
 import styles from "./EventDetailsForm.module.css";
 import ChipInput from "material-ui-chip-input";
+import moment from "moment";
+import { Formik, Field, Form } from "formik";
 
 const EVENTMUTATION = gql`
   mutation updateEvent(
@@ -34,112 +36,151 @@ const EVENTMUTATION = gql`
 `;
 
 const EventDetailsForm = ({ event }) => {
-  console.log(styles.box);
-  const [title, setTitle] = useState(event.title || "");
-  const [description, setDescription] = useState(event.description || "");
-  const [source, setSource] = useState(event.source || "");
-  const [href, setHref] = useState(event.href || "");
-  const [crawlDate, setCrawlDate] = useState(event.crawlDate || Date.now());
-  const [eventDate, setEventDate] = useState(event.eventDate || Date.now());
-
   return (
-    <div className={styles.box}>
-      <div className={styles.header}>Event Form</div>
+    <Formik
+      initialValues={{
+        ...event,
+        tags: ["Hezbollah", "Israel"],
+        indicators: ["Increased risk of war", "Government formation"]
+      }}
+      onSubmit={(values, { setSubmitting }) => {
+        setTimeout(() => {
+          setSubmitting(false);
+          alert(JSON.stringify(values, null, 2));
+        }, 500);
+      }}
+    >
+      {({ values, touched, errors, dirty, isSubmitting }) => {
+        console.log(values, touched);
+        return (
+          <Form>
+            <div className={styles.box}>
+              <div className={styles.header}>Event Form</div>
 
-      <div className={styles.oneliner}>
-        <TextField
-          id="title"
-          name="title"
-          onChange={e => setTitle(e.target.value)}
-          value={title}
-          fullWidth
-          label="Title of the event"
-          type="text"
-        />
-      </div>
+              <div className={styles.oneliner}>
+                <Field
+                  name="title"
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      id="title"
+                      fullWidth
+                      label="Title of the event"
+                      type="text"
+                    />
+                  )}
+                />
+              </div>
 
-      <div className={styles.oneliner}>
-        <TextField
-          id="description"
-          name="description"
-          onChange={e => setDescription(e.target.value)}
-          value={description}
-          multiline
-          rows={8}
-          fullWidth
-          label="Description of the event"
-          type="text"
-        />
-      </div>
+              <div className={styles.oneliner}>
+                <Field
+                  name="description"
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      id="description"
+                      multiline
+                      rows={8}
+                      fullWidth
+                      label="Description of the event"
+                      type="text"
+                    />
+                  )}
+                />
+              </div>
 
-      <div className={styles.left}>
-        <TextField
-          id="source"
-          name="source"
-          onChange={e => setSource(e.target.value)}
-          value={source}
-          fullWidth
-          label="Source of article"
-          type="text"
-        />
-      </div>
+              <div className={styles.left}>
+                <Field
+                  name="source"
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      id="source"
+                      fullWidth
+                      label="Source of article"
+                      type="text"
+                    />
+                  )}
+                />
+              </div>
 
-      <div className={styles.right}>
-        <TextField
-          id="href"
-          name="href"
-          onChange={e => setHref(e.target.value)}
-          value={href}
-          fullWidth
-          label="Hyperlink of the article"
-          type="url"
-        />
-      </div>
+              <div className={styles.right}>
+                <Field
+                  name="href"
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      id="href"
+                      fullWidth
+                      label="Hyperlink of the article"
+                      type="url"
+                    />
+                  )}
+                />
+              </div>
 
-      <div className={styles.left}>
-        <TextField
-          id="eventDate"
-          name="eventDate"
-          onChange={e => setEventDate(e.target.value)}
-          value={eventDate}
-          fullWidth
-          label="Date of the event"
-          type="date"
-        />
-      </div>
+              <div className={styles.left}>
+                <Field
+                  name="eventDate"
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      id="eventDate"
+                      locale="en-gb"
+                      fullWidth
+                      label="Date of the event"
+                      type="date"
+                    />
+                  )}
+                />
+              </div>
 
-      <div className={styles.right}>
-        <TextField
-          id="crawlDate"
-          name="crawlDate"
-          onChange={e => setCrawlDate(e.target.value)}
-          value={crawlDate}
-          fullWidth
-          label="Date article was sourced"
-          type="date"
-        />
-      </div>
+              <div className={styles.right}>
+                <Field
+                  name="crawlDate"
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      id="crawlDate"
+                      fullWidth
+                      label="Date article was sourced"
+                      type="date"
+                    />
+                  )}
+                />
+              </div>
 
-      <div className={styles.oneliner}>
-        <ChipInput
-          fullWidth
-          defaultValue={["Hezbollah", "Israel"]}
-          onChange={chips => console.log(chips)}
-        />
-      </div>
+              <div className={styles.oneliner}>
+                <ChipInput
+                  name="tags"
+                  label="Tags"
+                  fullWidth
+                  defaultValue={["Hezbollah", "Israel"]}
+                  onChange={chips => console.log(chips)}
+                />
+              </div>
 
-      <div className={styles.oneliner}>
-        <ChipInput
-          fullWidth
-          defaultValue={["Increased risk of war", "Government formation"]}
-          onChange={chips => console.log(chips)}
-        />
-      </div>
+              <div className={styles.oneliner}>
+                <ChipInput
+                  name="indicators"
+                  label="Linked Indicators"
+                  fullWidth
+                  defaultValue={[
+                    "Increased risk of war",
+                    "Government formation"
+                  ]}
+                  onChange={chips => console.log(chips)}
+                />
+              </div>
 
-      <div className={styles.oneliner}>
-        <button> Update</button>
-      </div>
-    </div>
+              <div className={styles.oneliner}>
+                <button type="submit"> Update</button>
+              </div>
+            </div>{" "}
+          </Form>
+        );
+      }}
+    </Formik>
   );
 };
 
