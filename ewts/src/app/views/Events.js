@@ -20,13 +20,18 @@ const _rowClassName = ({ index }) => {
 
 const EVENTSQUERY = gql`
   {
-    allEvents {
+    events {
       id
       title
       description
       source
       href
       unread
+    }
+    eventsConnection {
+      aggregate {
+        count
+      }
     }
   }
 `;
@@ -46,8 +51,8 @@ const Events = ({ history }) => (
                   height={400}
                   headerHeight={40}
                   rowHeight={30}
-                  rowCount={data.allEvents.length}
-                  rowGetter={({ index }) => data.allEvents[index]}
+                  rowCount={data.eventsConnection.aggregate.count}
+                  rowGetter={({ index }) => data.events[index]}
                   rowClassName={_rowClassName}
                   headerClassName="headers"
                   onRowClick={({ rowData }) => {

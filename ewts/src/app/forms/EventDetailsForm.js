@@ -13,13 +13,15 @@ import FormGroup from "@material-ui/core/FormGroup";
 import styles from "./EventDetailsForm.module.css";
 import ChipInput from "material-ui-chip-input";
 import moment from "moment";
-import { Formik, Field, Form } from "formik";
+import { Formik, Field, Form, FieldArray } from "formik";
+import Chip from "@material-ui/core/Chip";
 
 const EVENTMUTATION = gql`
   mutation updateEvent(
     $id: ID!
     $title: String
     $description: String
+    $eventDate: Float
     $crawlDate: Float
   ) {
     updateEvent(
@@ -36,12 +38,30 @@ const EVENTMUTATION = gql`
 `;
 
 const EventDetailsForm = ({ event }) => {
+  const {
+    title,
+    description,
+    source,
+    href,
+    eventDate,
+    crawlDate,
+    tags,
+    indicators
+  } = event;
+
   return (
     <Formik
       initialValues={{
-        ...event,
-        tags: ["Hezbollah", "Israel"],
-        indicators: ["Increased risk of war", "Government formation"]
+        title,
+        description,
+        source,
+        href,
+        eventDate:
+          moment(eventDate).format("YYYY-MM-DD") || moment.format("YYYY-MM-DD"),
+        crawlDate:
+          moment(crawlDate).format("YYYY-MM-DD") || moment.format("YYYY-MM-DD"),
+        tags: tags || [],
+        indicators: indicators || []
       }}
       onSubmit={(values, { setSubmitting }) => {
         setTimeout(() => {
@@ -50,8 +70,7 @@ const EventDetailsForm = ({ event }) => {
         }, 500);
       }}
     >
-      {({ values, touched, errors, dirty, isSubmitting }) => {
-        console.log(values, touched);
+      {({ values, touched, errors, dirty, isSubmitting, handleChange }) => {
         return (
           <Form>
             <div className={styles.box}>
@@ -151,25 +170,36 @@ const EventDetailsForm = ({ event }) => {
               </div>
 
               <div className={styles.oneliner}>
-                <ChipInput
+                <FieldArray
                   name="tags"
-                  label="Tags"
-                  fullWidth
-                  defaultValue={["Hezbollah", "Israel"]}
-                  onChange={chips => console.log(chips)}
+                  render={arrayHelpers => (
+                    <ChipInput
+                      fullWidth
+                      label="Tags"
+                      value={values.tags}
+                      onAdd={e => arrayHelpers.push(e)}
+                      onDelete={e => {
+                        arrayHelpers.remove(values.tags.indexOf(e));
+                      }}
+                    />
+                  )}
                 />
               </div>
 
               <div className={styles.oneliner}>
-                <ChipInput
+                <FieldArray
                   name="indicators"
-                  label="Linked Indicators"
-                  fullWidth
-                  defaultValue={[
-                    "Increased risk of war",
-                    "Government formation"
-                  ]}
-                  onChange={chips => console.log(chips)}
+                  render={arrayHelpers => (
+                    <ChipInput
+                      value={values.indicators}
+                      label="Linked Indicators"
+                      fullWidth
+                      onAdd={e => arrayHelpers.push(e)}
+                      onDelete={e => {
+                        arrayHelpers.remove(values.indicators.indexOf(e));
+                      }}
+                    />
+                  )}
                 />
               </div>
 

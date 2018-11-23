@@ -19,6 +19,8 @@ const EVENTQUERY = gql`
       source
       href
       unread
+      tags
+      indicators
     }
   }
 `;
