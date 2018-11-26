@@ -1,20 +1,11 @@
-import React, { useState } from "react";
-import NavbarBottom from "../views/NavbarBottom";
+import React from "react";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
-import PropTypes from "prop-types";
-import classNames from "classnames";
-import { withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
-import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
-import SaveIcon from "@material-ui/icons/Save";
-import FormGroup from "@material-ui/core/FormGroup";
 import styles from "./EventDetailsForm.module.css";
 import ChipInput from "material-ui-chip-input";
 import moment from "moment";
 import { Formik, Field, Form, FieldArray } from "formik";
-import Chip from "@material-ui/core/Chip";
 
 const UPDATE_EVENT = gql`
   mutation UpdateEvent(

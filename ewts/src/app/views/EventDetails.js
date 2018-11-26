@@ -1,10 +1,7 @@
 import React, { useState } from "react";
 import gql from "graphql-tag";
-import { Query, Mutation } from "react-apollo";
+import { Query } from "react-apollo";
 
-import TextField from "@material-ui/core/TextField";
-import Paper from "@material-ui/core/Paper";
-import Button from "@material-ui/core/Button";
 import EventDetailsStatic from "./EventDetailsStatic";
 import EventDetailsForm from "../forms/EventDetailsForm";
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -16,6 +13,7 @@ const EVENTQUERY = gql`
       title
       description
       crawlDate
+      eventDate
       source
       href
       descriptors {
@@ -38,7 +36,7 @@ const styles = theme => ({
 });
 
 const EventDetails = ({ match, classes, history }) => {
-  const [editing, setEditing] = useState(true);
+  const [editing, setEditing] = useState(false);
   const id = match.params.id;
 
   const onEdit = () => {
@@ -58,7 +56,7 @@ const EventDetails = ({ match, classes, history }) => {
             return (
               <div>
                 {" "}
-                <EventDetailsStatic event={data.event} />{" "}
+                <EventDetailsStatic event={data.event} onEdit={onEdit} />{" "}
               </div>
             );
           } else {

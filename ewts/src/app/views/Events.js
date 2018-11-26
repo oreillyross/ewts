@@ -1,13 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
 import { Column, Table, AutoSizer } from "react-virtualized";
 import styles from "./Events.module.css";
-import Input from "@material-ui/icons/Input";
 import Read from "@material-ui/icons/Drafts";
 import Markunread from "@material-ui/icons/Markunread";
-import EventDetails from "./EventDetails";
-import { Route, Redirect } from "react-router-dom";
 import NavbarBottom from "./NavbarBottom";
 
 const _rowClassName = ({ index }) => {
