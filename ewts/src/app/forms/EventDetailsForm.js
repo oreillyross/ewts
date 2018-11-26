@@ -37,6 +37,24 @@ const EVENTMUTATION = gql`
   }
 `;
 
+const ADD_DESCRIPTOR = gql`
+  mutation addDescriptor($tag: String!) {
+    createDescriptor(data: { tag: $tag }) {
+      id
+      tag
+    }
+  }
+`;
+
+const REMOVE_DESCRIPTOR = gql`
+  mutation removeDescriptor($tag: String!) {
+    deleteDescriptor(where: { tag: $tag }) {
+      id
+      tag
+    }
+  }
+`;
+
 const EventDetailsForm = ({ event }) => {
   const {
     title,
@@ -46,9 +64,9 @@ const EventDetailsForm = ({ event }) => {
     eventDate,
     crawlDate,
     tags,
-    indicators
+    descriptors
   } = event;
-
+  console.log(descriptors);
   return (
     <Formik
       initialValues={{
@@ -60,8 +78,7 @@ const EventDetailsForm = ({ event }) => {
           moment(eventDate).format("YYYY-MM-DD") || moment.format("YYYY-MM-DD"),
         crawlDate:
           moment(crawlDate).format("YYYY-MM-DD") || moment.format("YYYY-MM-DD"),
-        tags: tags || [],
-        indicators: indicators || []
+        descriptors: descriptors.map(d => d.tag)
       }}
       onSubmit={(values, { setSubmitting }) => {
         setTimeout(() => {
@@ -171,34 +188,31 @@ const EventDetailsForm = ({ event }) => {
 
               <div className={styles.oneliner}>
                 <FieldArray
-                  name="tags"
+                  name="descriptors"
                   render={arrayHelpers => (
-                    <ChipInput
-                      fullWidth
-                      label="Tags"
-                      value={values.tags}
-                      onAdd={e => arrayHelpers.push(e)}
-                      onDelete={e => {
-                        arrayHelpers.remove(values.tags.indexOf(e));
-                      }}
-                    />
-                  )}
-                />
-              </div>
-
-              <div className={styles.oneliner}>
-                <FieldArray
-                  name="indicators"
-                  render={arrayHelpers => (
-                    <ChipInput
-                      value={values.indicators}
-                      label="Linked Indicators"
-                      fullWidth
-                      onAdd={e => arrayHelpers.push(e)}
-                      onDelete={e => {
-                        arrayHelpers.remove(values.indicators.indexOf(e));
-                      }}
-                    />
+                    <Mutation mutation={REMOVE_DESCRIPTOR}>
+                      {(removeDescriptor, { data }) => (
+                        <Mutation mutation={ADD_DESCRIPTOR}>
+                          {(createDescriptor, { data }) => (
+                            <ChipInput
+                              fullWidth
+                              label="Descriptors"
+                              value={values.descriptors}
+                              onAdd={e => {
+                                createDescriptor({ variables: { tag: e } });
+                                arrayHelpers.push(e);
+                              }}
+                              onDelete={e => {
+                                removeDescriptor({ variables: { tag: e } });
+                                arrayHelpers.remove(
+                                  values.descriptors.indexOf(e)
+                                );
+                              }}
+                            />
+                          )}
+                        </Mutation>
+                      )}
+                    </Mutation>
                   )}
                 />
               </div>

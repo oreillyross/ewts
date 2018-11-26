@@ -10,17 +10,18 @@ import EventDetailsForm from "../forms/EventDetailsForm";
 import withStyles from "@material-ui/core/styles/withStyles";
 
 const EVENTQUERY = gql`
-  query getEvent($id: ID!) {
-    getEvent(id: $id) {
+  query event($id: ID!) {
+    event(where: { id: $id }) {
       id
       title
       description
       crawlDate
       source
       href
-      unread
-      tags
-      indicators
+      descriptors {
+        id
+        tag
+      }
     }
   }
 `;
@@ -57,13 +58,13 @@ const EventDetails = ({ match, classes, history }) => {
             return (
               <div>
                 {" "}
-                <EventDetailsStatic event={data.getEvent} />{" "}
+                <EventDetailsStatic event={data.event} />{" "}
               </div>
             );
           } else {
             return (
               <div>
-                <EventDetailsForm event={data.getEvent} />
+                <EventDetailsForm event={data.event} />
               </div>
             );
           }
