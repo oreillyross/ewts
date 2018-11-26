@@ -6,6 +6,8 @@ import Events from "./app/views/Events";
 import client from "./data/apolloClient";
 import { ApolloProvider } from "react-apollo";
 import { BrowserRouter as Router, Link, Route } from "react-router-dom";
+import EventDetailsForm from "./app/forms/EventDetailsForm";
+import EventDescriptorsForm from "./app/forms/EventDescriptorsForm";
 
 class App extends Component {
   render() {
@@ -22,6 +24,9 @@ class App extends Component {
                   <Link to="/events">
                     <button>Events list</button>
                   </Link>
+                  <Link to="/eventDescriptorsForm">
+                    <button>Event descriptors</button>
+                  </Link>
                   <hr />
                 </span>
                 &nbsp;&nbsp;
@@ -29,6 +34,11 @@ class App extends Component {
               <div className="body">
                 <Route path="/events" component={Events} />
                 <Route path="/eventdetails/:id" component={EventDetails} />
+                <Route path="/newEvent" component={EventDetailsForm} />
+                <Route
+                  path="/eventDescriptorsForm"
+                  component={EventDescriptorsForm}
+                />
               </div>
             </div>
           </ApolloProvider>

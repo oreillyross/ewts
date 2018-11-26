@@ -6,6 +6,7 @@ import styles from "./Events.module.css";
 import Read from "@material-ui/icons/Drafts";
 import Markunread from "@material-ui/icons/Markunread";
 import NavbarBottom from "./NavbarBottom";
+import Paper from "@material-ui/core/Paper";
 
 const _rowClassName = ({ index }) => {
   if (index < 0) {
@@ -39,7 +40,7 @@ const Events = ({ history }) => (
       if (loading) return "Loading data.......";
       if (error) return `Error: ${error.message}`;
       return (
-        <div>
+        <Paper className="Paper">
           <AutoSizer disableHeight>
             {({ width }) => (
               <div>
@@ -82,7 +83,7 @@ const Events = ({ history }) => (
             )}
           </AutoSizer>
           <NavbarBottom addButton />
-        </div>
+        </Paper>
       );
     }}
   </Query>
