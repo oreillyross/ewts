@@ -33,8 +33,10 @@ const NavbarBottom = ({
   addButton,
   editButton,
   saveButton,
-  onEdit
+  onEdit,
+  history
 }) => {
+  console.log(history);
   return (
     <AppBar position="fixed" color="primary" className={classes.appBar}>
       <Toolbar className={classes.toolbar}>
@@ -44,6 +46,7 @@ const NavbarBottom = ({
             color="secondary"
             aria-label="Add"
             className={classes.fabButton}
+            onClick={e => history.push("/newEvent")}
           >
             <AddIcon />
           </Button>

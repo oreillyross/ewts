@@ -26,11 +26,6 @@ const EVENTSQUERY = gql`
       href
       unread
     }
-    eventsConnection {
-      aggregate {
-        count
-      }
-    }
   }
 `;
 
@@ -39,6 +34,7 @@ const Events = ({ history }) => (
     {({ loading, error, data }) => {
       if (loading) return "Loading data.......";
       if (error) return `Error: ${error.message}`;
+
       return (
         <Paper className="Paper">
           <AutoSizer disableHeight>
@@ -49,7 +45,7 @@ const Events = ({ history }) => (
                   height={400}
                   headerHeight={40}
                   rowHeight={30}
-                  rowCount={data.eventsConnection.aggregate.count}
+                  rowCount={data.events.length}
                   rowGetter={({ index }) => data.events[index]}
                   rowClassName={_rowClassName}
                   headerClassName="headers"
@@ -82,7 +78,7 @@ const Events = ({ history }) => (
               </div>
             )}
           </AutoSizer>
-          <NavbarBottom addButton />
+          <NavbarBottom history={history} addButton />
         </Paper>
       );
     }}
