@@ -36,7 +36,6 @@ const NavbarBottom = ({
   onEdit,
   history
 }) => {
-  console.log(history);
   return (
     <AppBar position="fixed" color="primary" className={classes.appBar}>
       <Toolbar className={classes.toolbar}>

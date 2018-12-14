@@ -34,7 +34,7 @@ const Descriptors = () => {
                     headerClassName="headers"
                   >
                     <Column
-                      label="Keywords"
+                      label="Descriptors"
                       dataKey="keywords"
                       width={800}
                       className="rows"
