@@ -7,6 +7,7 @@ import { Formik } from "formik";
 import Input from "@material-ui/core/Input";
 import Button from "@material-ui/core/Button";
 import styled from "styled-components";
+import Delete from "@material-ui/icons/DeleteOutlined";
 
 const KEYWORDS_QUERY = gql`
   query Keywords {
@@ -26,15 +27,54 @@ const ADD_KEYWORD = gql`
   }
 `;
 
-const EditKeyword = ({ id, searchterm }) => {
-  console.log(id);
-  return <div>{searchterm}</div>;
+const DELETE_KEYWORD = gql`
+  mutation deleteKeyword($id: ID!) {
+    deleteKeyword(where: { id: $id }) {
+      id
+    }
+  }
+`;
+
+const EditKeyword = ({ id, searchterm, updateEdit }) => {
+  return (
+    <div>
+      <Formik initialValues={(id, searchterm)}>
+        <Input
+          type="text"
+          onBlur={e => {
+            console.log("blurred");
+            updateEdit(false);
+          }}
+        />
+      </Formik>
+      <Mutation
+        mutation={DELETE_KEYWORD}
+        update={(cache, { data: { deleteKeyword } }) => {
+          const { keywords } = cache.readQuery({ query: KEYWORDS_QUERY });
+          cache.writeQuery({
+            query: KEYWORDS_QUERY,
+            data: { keywords: keywords.filter(keyword => keyword.id !== id) }
+          });
+        }}
+      >
+        {deleteKeyword => {
+          return (
+            <Delete
+              onClick={e => {
+                deleteKeyword({ variables: { id: id } });
+                updateEdit(false);
+              }}
+            />
+          );
+        }}
+      </Mutation>
+    </div>
+  );
 };
 
 const KeywordRow = ({ id, searchterm }) => {
   const [editing, updateEdit] = useState(false);
 
-  console.log(editing);
   if (!editing) {
     return (
       <StyledKeywordRow
@@ -51,6 +91,7 @@ const KeywordRow = ({ id, searchterm }) => {
         id={id}
         searchterm={searchterm}
         onClick={e => updateEdit(!editing)}
+        updateEdit={updateEdit}
       />
     );
   }
