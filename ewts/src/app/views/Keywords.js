@@ -35,18 +35,53 @@ const DELETE_KEYWORD = gql`
   }
 `;
 
+const UPDATE_KEYWORD = gql`
+  mutation updateKeyword($id: ID!, $searchterm: String!) {
+    updateKeyword(data: { searchterm: $searchterm }, where: { id: $id }) {
+      searchterm
+      id
+    }
+  }
+`;
+
 const EditKeyword = ({ id, searchterm, updateEdit }) => {
   return (
     <div>
-      <Formik initialValues={(id, searchterm)}>
-        <Input
-          type="text"
-          onBlur={e => {
-            console.log("blurred");
-            updateEdit(false);
-          }}
-        />
-      </Formik>
+      <Mutation mutation={UPDATE_KEYWORD}>
+        {(updateKeyword, { data }) => {
+          return (
+            <Formik initialValues={{ id, searchterm }}>
+              {({
+                values,
+                errors,
+                isSubmitting,
+                touched,
+                handleSubmit,
+                handleChange
+              }) => {
+                return (
+                  <Input
+                    type="text"
+                    name="searchterm"
+                    onChange={handleChange}
+                    disabled={isSubmitting}
+                    onBlur={e => {
+                      updateKeyword({
+                        variables: {
+                          id: values.id,
+                          searchterm: values.searchterm
+                        }
+                      });
+                      updateEdit(false);
+                    }}
+                    value={values.searchterm}
+                  />
+                );
+              }}
+            </Formik>
+          );
+        }}
+      </Mutation>
       <Mutation
         mutation={DELETE_KEYWORD}
         update={(cache, { data: { deleteKeyword } }) => {
