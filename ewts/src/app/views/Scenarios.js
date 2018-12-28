@@ -14,6 +14,7 @@ const SCENARIOS_QUERY = gql`
     scenarios {
       id
       title
+      description
     }
   }
 `;
@@ -109,7 +110,7 @@ const EditScenario = ({ id, title, updateEdit }) => {
   );
 };
 
-const ScenarioRow = ({ id, title }) => {
+const ScenarioRow = ({ id, title, description }) => {
   const [editing, updateEdit] = useState(false);
 
   if (!editing) {
@@ -119,7 +120,7 @@ const ScenarioRow = ({ id, title }) => {
           updateEdit(!editing);
         }}
       >
-        {title}
+        {title} {description}
       </StyledScenarioRow>
     );
   } else {
@@ -127,6 +128,7 @@ const ScenarioRow = ({ id, title }) => {
       <EditScenario
         id={id}
         title={title}
+        description={description}
         onClick={e => updateEdit(!editing)}
         updateEdit={updateEdit}
       />
@@ -145,6 +147,7 @@ const Scenarios = () => {
   return (
     <Query query={SCENARIOS_QUERY}>
       {({ loading, error, data }) => {
+        console.table(data.scenarios);
         if (loading) return "Loading data.......";
         if (error) return `Error: ${error.message}`;
 
@@ -164,15 +167,29 @@ const Scenarios = () => {
                       headerClassName="headers"
                     >
                       <Column
-                        label="Scenarios"
-                        dataKey="scenarios"
-                        width={800}
+                        label="Scenario title"
+                        dataKey="scenario_title"
+                        width={400}
                         className="rows"
                         cellRenderer={({ rowData }) => {
                           return (
                             <ScenarioRow
                               id={rowData.id}
                               title={rowData.title}
+                            />
+                          );
+                        }}
+                      />
+                      <Column
+                        label="description"
+                        dataKey="scenario_description"
+                        width={800}
+                        className="rows"
+                        cellRenderer={({ rowData }) => {
+                          return (
+                            <ScenarioRow
+                              id={rowData.id}
+                              description={rowData.description}
                             />
                           );
                         }}

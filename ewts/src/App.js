@@ -40,9 +40,6 @@ class App extends Component {
                   <Link to="/events">
                     <button>Events list</button>
                   </Link>
-                  <Link to="/eventDescriptorsForm">
-                    <button>Event descriptors</button>
-                  </Link>
                   <Link to="/newEvent">
                     <button>New Event</button>
                   </Link>
@@ -58,10 +55,6 @@ class App extends Component {
                 <Route path="/descriptors" component={Descriptors} />
                 <Route path="/eventdetails/:id" component={EventDetails} />
                 <Route path="/newEvent" component={EventDetailsForm} />
-                <Route
-                  path="/eventDescriptorsForm"
-                  component={EventDescriptorsForm}
-                />
               </div>
             </div>
           </ApolloProvider>
