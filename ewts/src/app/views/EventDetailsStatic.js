@@ -9,6 +9,8 @@ import { format, parse } from "date-fns";
 import { Formik, Form } from "formik";
 import Input from "@material-ui/core/Input";
 import DescriptorTagInput from "../components/DescriptorTagInput";
+import { DESCRIPTORS_QUERY } from "../queries/descriptor";
+import { Query } from "react-apollo";
 
 const EventDetailsStatic = ({ event, onEdit }) => {
   return (
@@ -58,6 +60,15 @@ const EventDetailsStatic = ({ event, onEdit }) => {
             }) => {
               return (
                 <Form onSubmit={handleSubmit}>
+                  <Query query={DESCRIPTORS_QUERY}>
+                    {({ loading, error, data }) => {
+                      if (loading) return null;
+                      console.log(data.descriptors);
+                      return data.descriptors.map(descriptor => (
+                        <Chip key={descriptor.id} label={descriptor.tag} />
+                      ));
+                    }}
+                  </Query>
                   <DescriptorTagInput />
 
                   {errors.tag && touched.tag}

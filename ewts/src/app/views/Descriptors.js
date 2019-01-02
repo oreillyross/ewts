@@ -8,41 +8,12 @@ import Input from "@material-ui/core/Input";
 import Button from "@material-ui/core/Button";
 import styled from "styled-components";
 import Delete from "@material-ui/icons/DeleteOutlined";
-
-const DESCRIPTORS_QUERY = gql`
-  query Descriptors {
-    descriptors {
-      id
-      tag
-    }
-  }
-`;
-
-const ADD_DESCRIPTOR = gql`
-  mutation createDescriptor($tag: String!) {
-    createDescriptor(data: { tag: $tag }) {
-      id
-      tag
-    }
-  }
-`;
-
-const DELETE_DESCRIPTOR = gql`
-  mutation deleteDescriptor($id: ID!) {
-    deleteDescriptor(where: { id: $id }) {
-      id
-    }
-  }
-`;
-
-const UPDATE_DESCRIPTOR = gql`
-  mutation updateDescriptor($id: ID!, $tag: String!) {
-    updateDescriptor(data: { tag: $tag }, where: { id: $id }) {
-      tag
-      id
-    }
-  }
-`;
+import {
+  DESCRIPTORS_QUERY,
+  ADD_DESCRIPTOR,
+  DELETE_DESCRIPTOR,
+  UPDATE_DESCRIPTOR
+} from "../queries/descriptor";
 
 const EditDescriptor = ({ id, tag, updateEdit }) => {
   return (
