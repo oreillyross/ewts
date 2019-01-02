@@ -11,15 +11,10 @@ const EVENTQUERY = gql`
     event(where: { id: $id }) {
       id
       title
+      source
       description
       crawlDate
-      eventDate
-      source
-      href
-      descriptors {
-        id
-        tag
-      }
+      category
     }
   }
 `;
@@ -56,7 +51,8 @@ const EventDetails = ({ match, classes, history }) => {
             return (
               <div>
                 {" "}
-                <EventDetailsStatic event={data.event} onEdit={onEdit} />{" "}
+                {console.table(data.event)}
+                <EventDetailsStatic event={data.event} />
               </div>
             );
           } else {
